@@ -2,32 +2,34 @@
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+@font-face {
+  font-family: 'BMEULJIRO';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@1.0/BMEULJIRO.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+body {
+  font-family: 'BMEULJIRO';
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.black-nav {
+  background: black;
+  width: 100%;
+  color: aquamarine;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  padding: 10px;
+  font-weight: 600;
+  font-size: 20px;
 }
 
-.App-link {
-  color: #61dafb;
+.list{
+  margin-top: 30px;
+  text-align: left;
+  padding-left: 20px;
+  padding-right: 20px;
 }
-
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
