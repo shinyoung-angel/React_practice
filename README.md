@@ -38,3 +38,9 @@ npm run serve --> 얘는 Vue
 1. {useState} 상단에 첨부
    
    > import React, { useState } from 'react';
+
+2. state 사용 이유는?
+   
+   > 웹이 App처럼 동작하게 만들고 싶어서
+   > 
+   > ****state는 변경되면 html이 자동으로 재렌더링 된다 ****
