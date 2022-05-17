@@ -226,10 +226,6 @@ export default DiaryList;
 export default DiaryItem;
 ```
 
-
-
-
-
 #### 6. 배열 사용하기 2 - 데이터 추가하기
 
 ```javascript
@@ -239,7 +235,7 @@ export default DiaryItem;
 function App() {
 
   const [data, setData] = useState([]);
-  
+
   const dataId = useRef(0);
   const onCreate = (author, content, emotion) => {
     const created_date = new Date().getTime();
@@ -288,4 +284,164 @@ export default App;
             emotion: 1
         })
     }
+```
+
+#### 6. 배열 사용하기 3 - 데이터 삭제하기
+
+```javascript
+## App.js
+// 삭제하는 함수를 만들고 이 함수를 DiaryList로 전해
+const onRemove = (targetId) => {
+    console.log(`${targetId}삭제됨`)
+    const newDiaryList = data.filter((it)=> it.id !== targetId);
+    setData(newDiaryList);
+  };
+
+
+  return (
+    <div className="App">
+      <DiaryEditor onCreate={onCreate}/>
+      <DiaryList onㄲ={onRemove} diaryList={data}/>
+    </div>
+  );
+
+
+// DiaryList에서는 props로 onRemove 함수 받기
+const DiaryList = ({onRemove, diaryList}) => {
+    return (
+        <div className="DiaryList">
+            <h2>Diary List</h2>
+            <h4>{diaryList.length}개의 일기가 있습니다</h4>
+
+            <div>
+                {diaryList.map((it)=>(
+                    // props 받을 때 고유한 key값 필요
+                    <DiaryItem key={it.id} {...it} onRemove={onRemove}/>
+
+            </div>
+
+// DiaryItem에서 button에다 onclick이벤트로 심어주기!!
+
+ <button onClick={()=>{
+                console.log(id);
+                if (window.confirm(`${id}번째 일기 삭제할겨?`)){
+                    onRemove(id);
+                }
+
+                }}>삭제하기</button>
+```
+
+#### 6. 배열 사용하기 4 - 데이터 수정하기
+
+```javascript
+// app.js에서 삭제, 수정 함수 만들기
+
+
+
+const onRemove = (targetId) => {
+    console.log(`${targetId}삭제됨`)
+    const newDiaryList = data.filter((it)=> it.id !== targetId);
+    setData(newDiaryList);
+  };
+
+  const onEdit = (targetId, newContent) => {
+    setData(
+      data.map((it) => it.id === targetId ? {...it, content:newContent} : it)
+    )
+  };
+
+  return (
+    <div className="App">
+      <DiaryEditor onCreate={onCreate}/>
+      <DiaryList onRemove={onRemove} onEdit={onEdit} diaryList={data}/>
+    </div>   
+
+
+
+
+
+// DiaryList로 넘겨주기 
+
+const DiaryList = ({onRemove, onEdit, diaryList}) => {
+
+.
+
+.
+
+<DiaryItem key={it.id} {...it} onRemove={onRemove} onEdit={onEdit}/>
+
+.
+
+.
+
+
+
+//DiaryItem에서 사용하기
+
+import { useState, useRef } from "react";
+
+const DiaryItem = ({onEdit, onRemove, author, content, emotion, created_date, id}) => {
+
+    const [isEdit, setIsEdit] = useState(false);
+    const toggleIsEdit = () => {
+        setIsEdit(!isEdit);
+    };
+
+    const [localContent, setLocalContent] = useState(content);
+    const localContentInput = useRef();
+
+    const handleRemove = () => {
+        if (window.confirm(`${id}번째 일기 삭제할겨?`)){
+            console.log('before')
+            onRemove(id);
+            console.log('after')
+        }
+    };
+
+    const handleQuitEdit = () => {
+        setIsEdit(false);
+        setLocalContent(content);
+    };
+
+    const handleEdit = () => {
+        if (localContent.length < 5){
+            localContentInput.current.focus();
+            return;
+        }
+
+        if (window.confirm(`${id}번째 일기 수정 ㄱㄱ?`)){
+
+            onEdit(id, localContent);
+            toggleIsEdit();
+        }
+    };
+
+    return (
+        <div className="DiaryItem">
+            <div className="info">
+                <span>작성자: {author} | 감정점수: {emotion}</span>
+                <br/>
+                <span className="date">{new Date(created_date).toLocaleString()}</span>
+            </div>
+            <div className="content">
+                {isEdit ? (
+                <>
+                    <textarea ref={localContentInput} value={localContent} onChange={(e)=> setLocalContent(e.target.value)}/>
+                </> ): (
+                <>{content}</>)}
+            </div>
+
+            {isEdit ? <>
+                <button onClick={handleQuitEdit}>수정 취소</button>
+                <button onClick={handleEdit}>수정완료</button>
+            </> : 
+            <>
+            <button onClick={handleRemove}>삭제하기</button>
+            <button onClick={toggleIsEdit}>수정하기</button>
+            </>}
+        </div>
+    )
+};
+
+export default DiaryItem;
 ```

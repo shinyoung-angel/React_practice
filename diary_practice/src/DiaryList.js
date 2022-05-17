@@ -1,6 +1,6 @@
 import DiaryItem from "./DiaryItem";
 
-const DiaryList = ({diaryList}) => {
+const DiaryList = ({onRemove, onEdit, diaryList}) => {
     return (
         <div className="DiaryList">
             <h2>Diary List</h2>
@@ -9,7 +9,7 @@ const DiaryList = ({diaryList}) => {
             <div>
                 {diaryList.map((it)=>(
                     // props 받을 때 고유한 key값 필요
-                    <DiaryItem key={it.id} {...it}/>
+                    <DiaryItem key={it.id} {...it} onRemove={onRemove} onEdit={onEdit}/>
                     // <div key={it.id}>
                     //     <div>작성자: {it.author}</div>
                     //     <div>일기: {it.content}</div>
